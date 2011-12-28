@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.version     = MetaManager::VERSION
   s.authors     = ["Pavel Galeta"]
   s.email       = ["superp1987@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of MetaManager."
+  s.homepage    = "https://github.com/superp/meta_manager"
+  s.summary     = "Head meta tags manager for models."
   s.description = "Aimbulance CMS"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]

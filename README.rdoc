@@ -1,3 +1,26 @@
 = MetaManager
 
-This project rocks and uses MIT-LICENSE.
+Enable meta tags in your model
+
+== Install
+
+  gem "meta_manager"
+  
+  rake meta_manager_engine:install:migrations
+
+== Usage
+
+  class Category < ActiveRecord::Base
+    include MetaManager::Taggable
+  end
+
+  @category = Category.new
+  @category.meta_tag(:keywords) = "Some keywords"
+  @category.meta_tag(:description) = "Some description"
+  @category.save
+
+== Test
+
+  rake test
+
+Copyright (c) 2011 Aimbulance, released under the MIT license
