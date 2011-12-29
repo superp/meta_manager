@@ -15,8 +15,8 @@ Enable meta tags in your model
   end
 
   @category = Category.new
-  @category.meta_tag(:keywords) = "Some keywords"
-  @category.meta_tag(:description) = "Some description"
+  @category.tag_keywords = "Some keywords"
+  @category.tag_description = "Some description"
   @category.save
 
 == Test

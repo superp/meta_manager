@@ -29,6 +29,23 @@ module MetaManager
           key = value.to_s.downcase.strip
           key
         end
+        
+        def method_missing(method, *args, &block)
+          key = method.to_s
+          
+          if key =~ /^tag_/
+            attr_name = key.gsub(/^tag_/, '')
+            
+            if key =~ /=$/
+              record = meta_tag(attr_name)
+              record.content = args.first
+            else 
+              meta_tag(attr_name).try(:content)
+            end
+          else
+            super
+          end
+        end
       
     end
   end
