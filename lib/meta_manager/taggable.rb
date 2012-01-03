@@ -1,6 +1,6 @@
 module MetaManager
   module Taggable
-    extend ActiveSupport::Concern
+    extend ::ActiveSupport::Concern
     
     included do          
       has_many :meta_tags, :as => :taggable, :dependent => :destroy, :autosave => true
@@ -37,7 +37,7 @@ module MetaManager
             attr_name = key.gsub(/^tag_/, '')
             
             if key =~ /=$/
-              record = meta_tag(attr_name)
+              record = meta_tag(attr_name.chop)
               record.content = args.first
             else 
               meta_tag(attr_name).try(:content)
