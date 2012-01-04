@@ -19,7 +19,7 @@ module MetaManager
         end
       end
       
-      @page_meta_tags = tags.join("\n\s\s")
+      tags.join("\n\s\s")
     end
     
     def render_page_title(record=nil, options = {})
