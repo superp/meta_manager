@@ -3,7 +3,7 @@ class CreateMetaTags < ActiveRecord::Migration
     create_table :meta_tags do |t|
       t.string :name, :limit => 50, :null => false
       t.text :content
-      t.boolean :is_dymanic, :default => false
+      t.boolean :is_dynamic, :default => false
       
       t.integer :taggable_id, :null => false
       t.string :taggable_type, :limit => 50, :null => false

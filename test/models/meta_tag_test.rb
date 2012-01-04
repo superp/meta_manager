@@ -31,6 +31,26 @@ class MetaTagTest < ActiveSupport::TestCase
     assert !@next_tag.valid?
   end
   
+  test 'should be valid with not uniq name but dynamic' do
+    @tag.update_attribute(:name, 'test')
+    
+    @next_tag = MetaTag.new(:name => 'test', :is_dynamic => true)
+    @next_tag.taggable_type = 'Category'
+    @next_tag.taggable_id = 1
+    
+    assert @next_tag.valid?
+  end
+  
+  test 'should not be valid with not uniq name both dynamic' do
+    @tag.update_attribute(:is_dynamic, true)
+    
+    @next_tag = MetaTag.new(:name => 'somename', :is_dynamic => true)
+    @next_tag.taggable_type = 'Category'
+    @next_tag.taggable_id = 1
+    
+    assert !@next_tag.valid?
+  end
+  
   test 'should be valid with not uniq name in other parent record' do
     @tag.update_attribute(:name, 'test')
     
@@ -39,5 +59,9 @@ class MetaTagTest < ActiveSupport::TestCase
     @next_tag.taggable_id = 2
     
     assert @next_tag.valid?
+  end
+  
+  test 'should return valid dynamic content' do
+    assert true
   end
 end

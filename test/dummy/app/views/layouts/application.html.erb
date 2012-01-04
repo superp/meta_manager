@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dummy</title>
+  <%= raw(render_meta_tags(@category)) %>
+  <title><%= render_page_title(@category) %></title>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>

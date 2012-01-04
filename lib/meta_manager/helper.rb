@@ -3,31 +3,36 @@ module MetaManager
     #extend ::ActionView::Helpers::TagHelper
     
     def self.included(base)
-      base.send :helper_method, :render_meta_tags, :render_title
+      base.send :helper_method, :render_meta_tags, :render_page_title
     end
     
-    def render_meta_tags(record, options = {})
+    def render_meta_tags(record)
       return if record.nil?
-     
+      
+      dynamic = self.instance_variable_get("@meta_dynamic")
       tags = []
       
-      _meta_tags = record.respond_to?(:meta_tags) ? record.meta_tags : []
-      
-      _meta_tags.each do |meta_tag|
-        tags << tag(:meta, :content => meta_tag.get_content(controller), :name => meta_tag.name)
+      get_actual_meta_tags(record, dynamic).each do |meta_tag|
+        unless meta_tag.name == 'title'
+          type = meta_tag.name =~ /og:/ ? 'property' : 'name'
+          tags << "<meta content='#{meta_tag.get_content(self)}' #{type}='#{meta_tag.name}' />"
+        end
       end
       
-      tags.join("\n")
+      @page_meta_tags = tags.join("\n\s\s")
     end
     
-    def render_title(record=nil, options = {})      
-      @page_title = record.try(:meta_tags).try(:detect, {|t| t.name == 'title'}).try(:content) || get_page_title(record, options)
+    def render_page_title(record=nil, options = {})
+      dynamic = self.instance_variable_get("@meta_dynamic")
+      
+      meta_tags = get_actual_meta_tags(record, dynamic)    
+      meta_tags.detect{|t| t.name == 'title'}.try(:get_content, self) || get_page_title(record, options)
     end
     
     private
       
       def get_page_title(record, options)
-        options = { :spliter => ' – ', :append_title => true }.merge(options)
+        options = { :spliter => ' - ', :append_title => true }.merge(options)
         
         view_title = if record.respond_to?(:title)
           record.title
@@ -41,6 +46,17 @@ module MetaManager
         page_title << I18n.t("page.title") if options[:append_title]
 
         page_title.flatten.compact.uniq.join(options[:spliter])
+      end
+      
+      def get_actual_meta_tags(record, dynamic)
+        meta_tags = []
+        _meta_tags = record.respond_to?(:meta_tags) ? record.meta_tags : []
+        
+        _meta_tags.group_by(&:name).each do |name, items|
+          meta_tags << (items.detect{|r| r.is_dynamic && dynamic} || items.detect{|r| !r.is_dynamic})
+        end
+        
+        meta_tags.compact
       end
   end
 end
