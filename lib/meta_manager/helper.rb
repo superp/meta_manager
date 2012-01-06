@@ -34,15 +34,11 @@ module MetaManager
       def get_page_title(record, options)
         options = { :spliter => ' - ', :append_title => true }.merge(options)
         
-        view_title = if record.respond_to?(:title)
-          record.title
-        elsif record.respond_to(:name)
-          record.name
-        end
+        view_title = record.respond_to?(:title) ? record.title : (record.respond_to?(:name) ? record.name : nil) unless record.nil?
         
         page_title = []
         page_title << options[:title] if options.key?(:title)
-        page_title << view_title
+        page_title << view_title unless record.nil?
         page_title << I18n.t("page.title") if options[:append_title]
 
         page_title.flatten.compact.uniq.join(options[:spliter])
@@ -50,7 +46,7 @@ module MetaManager
       
       def get_actual_meta_tags(record, dynamic)
         meta_tags = []
-        _meta_tags = record.respond_to?(:meta_tags) ? record.meta_tags : []
+        _meta_tags = record && record.respond_to?(:meta_tags) ? record.meta_tags : []
         
         _meta_tags.group_by(&:name).each do |name, items|
           meta_tags << (items.detect{|r| r.is_dynamic && dynamic} || items.detect{|r| !r.is_dynamic})

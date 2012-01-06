@@ -1,4 +1,6 @@
 Dummy::Application.routes.draw do
+  root :to => 'welcome#index'
+  
   resources :posts
   resources :categories
   # The priority is based upon order of creation:

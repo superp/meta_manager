@@ -10,6 +10,7 @@ test/dummy/config/logrotate-config
 test/dummy/config/nginx-config
 test/dummy/db/schema.rb
 test/dummy/db/sphinx/
+test/dummy/db/*.sqlite.db
 test/dummy/public/cache/
 test/dummy/public/assets/
 test/dummy/public/ckeditor_assets/
