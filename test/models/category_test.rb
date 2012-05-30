@@ -38,4 +38,10 @@ class CategoryTest < ActiveSupport::TestCase
       @category.tagg_method
     end
   end
+  
+  test 'should be work with respond_to method' do
+    assert @category.respond_to?(:tag_title)
+    assert !@category.respond_to?(:tagg_title)
+    assert_respond_to(@category, :tag_title)
+  end
 end

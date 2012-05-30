@@ -21,18 +21,25 @@ module MetaManager
       @meta_tag[key] ||= find_or_build_meta_tag(key)
     end
     
+    def respond_to?(method_sym, include_private = false)
+      if method_sym.to_s =~ meta_match_case
+        true
+      else
+        super
+      end
+    end
+    
     protected
     
     def normalize_meta_tag_name(value)
-      key = value.to_s.downcase.strip
-      key
+      value.to_s.downcase.strip
     end
     
     def method_missing(method, *args, &block)
       key = method.to_s
       
-      if key =~ /^tag_/
-        attr_name = key.gsub(/^tag_/, '')
+      if key =~ meta_match_case
+        attr_name = key.gsub(meta_match_case, '')
         
         if key =~ /=$/
           record = meta_tag(attr_name.chop)
@@ -43,6 +50,10 @@ module MetaManager
       else
         super
       end
+    end
+    
+    def meta_match_case
+      /^tag_/
     end
   end
 end
