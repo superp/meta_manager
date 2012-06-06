@@ -15,9 +15,9 @@ class CategoryTest < ActiveSupport::TestCase
     @category.tag_title = value
     
     assert_equal @category.meta_tag(:title).content, value
-    assert_equal @category.meta_tag(:keywords).content, nil
+    assert_equal @category.meta_tag(:keywords).try(:content), nil
     
-    assert_difference('MetaTag.count', 2) do
+    assert_difference('MetaTag.count', 1) do
       @category.save
     end
   end
@@ -43,5 +43,16 @@ class CategoryTest < ActiveSupport::TestCase
     assert @category.respond_to?(:tag_title)
     assert !@category.respond_to?(:tagg_title)
     assert_respond_to(@category, :tag_title)
+  end
+  
+  test 'should not save tag without content' do    
+    @category.tag_title = ''
+    @category.save
+    
+    @category.reload
+    
+    assert_equal @category.meta_tags.count, 0
+    assert_equal @category.tag_title, nil
+    assert_equal @category.meta_tag(:title).try(:content), nil
   end
 end

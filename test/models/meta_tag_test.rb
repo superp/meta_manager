@@ -6,6 +6,7 @@ class MetaTagTest < ActiveSupport::TestCase
     @tag = MetaTag.new(:name => 'somename')
     @tag.taggable_type = 'Category'
     @tag.taggable_id = 1
+    @tag.content = 'some content'
   end
   
   test "truth" do
@@ -37,6 +38,7 @@ class MetaTagTest < ActiveSupport::TestCase
     @next_tag = MetaTag.new(:name => 'test', :is_dynamic => true)
     @next_tag.taggable_type = 'Category'
     @next_tag.taggable_id = 1
+    @next_tag.content = 'content'
     
     assert @next_tag.valid?
   end
@@ -57,6 +59,7 @@ class MetaTagTest < ActiveSupport::TestCase
     @next_tag = MetaTag.new(:name => 'test')
     @next_tag.taggable_type = 'Category'
     @next_tag.taggable_id = 2
+    @next_tag.content = 'content'
     
     assert @next_tag.valid?
   end
