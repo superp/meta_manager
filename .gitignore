@@ -1,6 +1,8 @@
 pkg/
 Gemfile.lock
 .rspec
+.bundle
+vendor
 test/tmp
 test/dummy/log/*.log
 test/dummy/tmp/
@@ -19,3 +21,4 @@ test/dummy/vendor/bundle/
 test/dummy/app/helpers/manage
 test/dummy/config/database.yml
 test/dummy/log/development.log
+test/dummy/db/test.sqlite3
