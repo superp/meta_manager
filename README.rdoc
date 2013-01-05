@@ -6,7 +6,15 @@ Enable meta tags in your model
 
   gem "meta_manager"
   
+ActiveRecord: 
+
+  require 'meta_manager/orm/active_record'
+
   rake meta_manager_engine:install:migrations
+
+Mongoid:
+
+  require 'meta_manager/orm/mongoid'
 
 == Usage
 
@@ -90,4 +98,4 @@ Action show:
 
   rake test
 
-Copyright (c) 2011 Aimbulance, released under the MIT license
+Copyright (c) 2012 Fodojo, released under the MIT license
