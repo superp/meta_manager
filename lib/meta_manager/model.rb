@@ -6,7 +6,7 @@ module MetaManager
       validates_presence_of :name, :taggable_type, :content
       validates_uniqueness_of :name, :scope => [:taggable_type, :taggable_id, :is_dynamic]
       
-      attr_accessible :name, :content, :is_dynamic
+      #attr_accessible :name, :content, :is_dynamic
     end
        
     def get_content(controller=nil)
