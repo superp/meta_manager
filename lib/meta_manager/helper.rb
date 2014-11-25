@@ -1,6 +1,6 @@
 module MetaManager
   module Helper
-    #extend ::ActionView::Helpers::TagHelper
+    include ::ActionView::Helpers::TagHelper
     
     def self.included(base)
       base.send :helper_method, :render_meta_tags, :render_page_title
@@ -15,7 +15,7 @@ module MetaManager
       get_actual_meta_tags(record, dynamic).each do |meta_tag|
         unless meta_tag.name == 'title'
           type = meta_tag.name =~ /og:/ ? 'property' : 'name'
-          tags << "<meta content='#{meta_tag.get_content(self)}' #{type}='#{meta_tag.name}' />"
+          tags << tag(:meta, type => meta_tag.name, :content => meta_tag.get_content(self))
         end
       end
       
