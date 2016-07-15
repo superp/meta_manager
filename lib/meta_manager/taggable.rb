@@ -15,6 +15,9 @@ module MetaManager
     def meta_tag(attr_name, options={})
       key = normalize_meta_tag_name(attr_name)
 
+      key, locale = localized_meta_key_case.match(key)[1..2]
+      key = [key, locale || I18n.locale].join('_')
+
       cached_meta_tags[key] ||= self.meta_tags.detect {|t| t.name == key}
       cached_meta_tags[key] ||= self.meta_tags.build(:name => key) if options[:build]
       cached_meta_tags[key]
@@ -31,29 +34,34 @@ module MetaManager
 
     protected
 
-      def method_missing_with_tags(method_name, *args)
-        key = method_name.to_s
+    def method_missing_with_tags(method_name, *args)
+      key = method_name.to_s
 
-        if key =~ meta_match_case
-          attr_name = key.gsub(meta_match_case, '')
+      if key =~ meta_match_case
+        attr_name = key.gsub(meta_match_case, '')
 
-          if key =~ /=$/ && !args.first.blank?
-            record = meta_tag(attr_name, :build => true)
-            record.content = args.first
-          else
-            meta_tag(attr_name).try(:content)
-          end
+        if key =~ /=$/ && !args.first.blank?
+          record = meta_tag(attr_name, :build => true)
+          record.content = args.first
         else
-          return method_missing_without_tags(method_name, *args)
+          meta_tag(attr_name).try(:content)
         end
+      else
+        return method_missing_without_tags(method_name, *args)
       end
+    end
 
-      def normalize_meta_tag_name(value)
-        value.to_s.downcase.strip.gsub("_before_type_cast", '').gsub(/=$/, '')
-      end
+    def normalize_meta_tag_name(value)
+      value.to_s.downcase.strip.gsub("_before_type_cast", '').gsub(/=$/, '')
+    end
 
-      def meta_match_case
-        /^tag_/
-      end
+    def meta_match_case
+      /^tag_/
+    end
+
+    def localized_meta_key_case
+      /^(.+?)(?:_(#{I18n.available_locales.join('|')}))?$/
+    end
+
   end
 end
