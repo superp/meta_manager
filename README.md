@@ -1,23 +1,30 @@
-= MetaManager
+# MetaManager
 
 Enable meta tags in your model
 
-== Install
+## Install
 
+```
   gem "meta_manager"
+```
 
 ActiveRecord:
 
+```
   require 'meta_manager/orm/active_record'
 
   rake meta_manager_engine:install:migrations
+```
 
 Mongoid:
 
+```
   require 'meta_manager/orm/mongoid'
+```
 
-== Usage
+## Usage
 
+```
   class Category < ActiveRecord::Base
     include MetaManager::Taggable
   end
@@ -38,8 +45,9 @@ Mongoid:
 
   # create post for dynamic example
   @post = Post.create(:title => 'post test title', :notes => 'post test notes')
+```
 
-== Rendering example
+## Rendering example
 
 At layouts/application.html.erb
 
@@ -49,6 +57,7 @@ At layouts/application.html.erb
 
 At controllers/posts_controller.rb
 
+```
   before_action :find_category
   before_action :prepare_dynamic_page, :only => [:show]
 
@@ -72,12 +81,13 @@ At controllers/posts_controller.rb
     def prepare_dynamic_page
       @meta_dynamic = true
     end
+```
 
 It will be generate meta tags and title for @category.
 In action show we wont to generate dynamic meta tags from instance @post.
 It means that meta tag 'og:title' and tag 'title' will be overwrited with attributes from instance @post.
 
-=== Results
+### Results
 
 Action index:
 
@@ -94,7 +104,7 @@ Action show:
   <title>post test title - post test notes</title>
 
 
-== Test
+## Test
 
   rake test
 

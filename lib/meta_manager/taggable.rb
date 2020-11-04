@@ -7,8 +7,6 @@ module MetaManager
 
       accepts_nested_attributes_for :meta_tags, reject_if: proc { |tag| tag['content'].nil? }, allow_destroy: true
 
-      # alias_method_chain :respond_to?, :tags
-      # alias_method_chain :method_missing, :tags
       base.prepend Extension
     end
 
@@ -44,7 +42,7 @@ module MetaManager
       @cached_meta_tags ||= {}
     end
 
-    protected
+    private
 
     def find_meta(key, fallback = false)
       found = meta_tags.detect { |t| t.name == key }
