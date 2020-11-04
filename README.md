@@ -24,7 +24,7 @@ Mongoid:
 
 ## Usage
 
-```
+```ruby
   class Category < ActiveRecord::Base
     include MetaManager::Taggable
   end
@@ -51,13 +51,15 @@ Mongoid:
 
 At layouts/application.html.erb
 
+```html
   <head>
   <%= raw(render_meta_tags(@category)) %>
   <title><%= render_page_title(@category) %></title>
+```
 
 At controllers/posts_controller.rb
 
-```
+```ruby
   before_action :find_category
   before_action :prepare_dynamic_page, :only => [:show]
 
@@ -73,14 +75,14 @@ At controllers/posts_controller.rb
 
   protected
 
-    def find_category
-      @category = Category.first
-    end
+  def find_category
+    @category = Category.first
+  end
 
-    # set @meta_dynamic true to turn on dymanic meta tags.
-    def prepare_dynamic_page
-      @meta_dynamic = true
-    end
+  # set @meta_dynamic true to turn on dymanic meta tags.
+  def prepare_dynamic_page
+    @meta_dynamic = true
+  end
 ```
 
 It will be generate meta tags and title for @category.
@@ -91,21 +93,26 @@ It means that meta tag 'og:title' and tag 'title' will be overwrited with attrib
 
 Action index:
 
+```html
   <meta content='Some keywords' name='keywords' />
   <meta content='Some description' name='description' />
   <meta content='category og:title' property='og:title' />
   <title>category test title</title>
+```
 
 Action show:
 
+```html
   <meta content='Some keywords' name='keywords' />
   <meta content='Some description' name='description' />
   <meta content='dynamic og:title - post test title' property='og:title' />
   <title>post test title - post test notes</title>
-
+```
 
 ## Test
 
+```
   rake test
+```
 
 Copyright (c) 2012 Fodojo, released under the MIT license
